@@ -28,3 +28,12 @@ clientName client = case client of
   Individual person _ ->
     case person of
       Person firstName lastName _ -> firstName ++ " " ++ lastName
+
+data GenderCount = GenderCount Int Int Int
+
+countGenders :: [Client] -> GenderCount -> GenderCount
+countGenders [] stats = stats
+countGenders ((Individual (Person _ _ Male) _) : xs) (GenderCount m f u) = countGenders xs (GenderCount (m + 1) f u)
+countGenders ((Individual (Person _ _ Female) _) : xs) (GenderCount m f u) = countGenders xs (GenderCount m (f + 1) u)
+countGenders ((Individual (Person _ _ Unknown) _) : xs) (GenderCount m f u) = countGenders xs (GenderCount m f (u + 1))
+countGenders (_ : xs) stats = countGenders xs stats
