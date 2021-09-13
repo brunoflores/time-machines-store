@@ -60,7 +60,7 @@ countGenders = foldr calc (GenderStats 0 0 0)
     calc Unknown (GenderStats m f u) = GenderStats m f (u + 1)
 
 calcGenders :: [Client] -> GenderStats
-calcGenders xs = countGenders (listGenders xs)
+calcGenders = countGenders . listGenders
 
 responsibility :: Client -> String
 responsibility (Company _ _ _ r) = r
