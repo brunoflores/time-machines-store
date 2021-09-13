@@ -3,15 +3,27 @@
 module Lib where
 
 data Client
-  = GovOrg String
-  | Company String Integer String String
-  | Individual Person Bool
+  = GovOrg {name :: String}
+  | Company
+      { name :: String,
+        companyId :: Integer,
+        person :: Person,
+        duty :: String
+      }
+  | Individual
+      { person :: Person,
+        ads :: Bool
+      }
   deriving (Show)
 
 data Gender = Male | Female | Unknown
   deriving (Show)
 
-data Person = Person String String Gender
+data Person = Person
+  { firstName :: String,
+    lastName :: String,
+    gender :: Gender
+  }
   deriving (Show)
 
 data Manufacturer = Manufacturer String
@@ -25,11 +37,11 @@ data TimeMachine = TimeMachine Integer String Float Manufacturer Features
 
 clientName :: Client -> String
 clientName client = case client of
-  GovOrg name -> name
-  Company name _ _ _ -> name
-  Individual person _ ->
-    case person of
-      Person firstName lastName _ -> firstName ++ " " ++ lastName
+  GovOrg {name = n} -> n
+  Company {name = n} -> n
+  Individual {person = p} ->
+    case p of
+      Person {firstName = f, lastName = l} -> f ++ " " ++ l
 
 data GenderCount = GenderCount Int Int Int
 
